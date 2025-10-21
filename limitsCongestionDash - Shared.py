@@ -1,11 +1,10 @@
 import streamlit as st
-import sqlite3
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from datetime import datetime as dt, timedelta
-from sqlalchemy import create_engine, engine
+from sqlalchemy import create_engine
 import urllib
 
 # Constants
@@ -36,20 +35,11 @@ def load_data():
     database = st.secrets["DB_NAME"]
     username = st.secrets["DB_USER"]
     password = st.secrets["DB_PASS"]
-    driver = '{ODBC Driver 18 for SQL Server}'
 
-    params = urllib.parse.quote_plus(
-        f'DRIVER={driver};'
-        f'SERVER={server};'
-        f'DATABASE={database};'
-        f'UID={username};'
-        f'PWD={password};'
-        'Encrypt=yes;'
-        'TrustServerCertificate=no;'
-        'Connection Timeout=30;'
+    # MySQL connection string format for SQLAlchemy with pymysql
+    engine = create_engine(
+        f"mysql+pymysql://{username}:{password}@{server}/{database}"
     )
-
-    engine = create_engine(f"mssql+pyodbc:///?odbc_connect={params}")
 
     ##### LOAD DA DATA #####
     da_query = """

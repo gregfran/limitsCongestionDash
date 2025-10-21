@@ -32,6 +32,11 @@ ZONES = ['NORTHWEST', 'NORTHEAST', 'WEST', 'SOUTHWEST', 'NIAGARA', 'ESSA', 'TORO
 @st.cache_data
 def load_data():
     """Load data from SQL Service database"""
+    server = st.secrets["DB_SERVER"]
+    database = st.secrets["DB_NAME"]
+    username = st.secrets["DB_USER"]
+    password = st.secrets["DB_PASS"]
+    driver = '{ODBC Driver 18 for SQL Server}'
 
     params = urllib.parse.quote_plus(
         f'DRIVER={driver};'
